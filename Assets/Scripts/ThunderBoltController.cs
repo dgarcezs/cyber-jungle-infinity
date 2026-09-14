@@ -10,7 +10,6 @@ public class ThunderBoltController : MonoBehaviour
     {
         if (collision.CompareTag(EnemyTag))
         {
-            Destroy(collision.gameObject);
             Destroy(gameObject);
         }                
     }
