@@ -3,10 +3,21 @@ using UnityEngine;
 public class EnemySpawnController : MonoBehaviour
 {
     public EnemyController enemyPrefab;
-
+    
     private int enemyCount = 0;
     private readonly int maxEnemyCount = 1000;
 
+    private Vector3 topBorder;
+    private Vector3 leftBorder;
+    private Vector3 rightBorder;
+    private float positionOffset = 1;
+
+    private void Start()
+    {
+        topBorder = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0));
+        leftBorder = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0));
+        rightBorder = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0));   
+    }
 
     private void OnEnable()
     {
@@ -22,17 +33,17 @@ public class EnemySpawnController : MonoBehaviour
     {
         if (enemyCount < maxEnemyCount)
         {
-            EnemyController enemyController = Instantiate(enemyPrefab, GetRandomPosition(), Quaternion.identity);
             enemyCount++;
+            EnemyController enemyController = Instantiate(enemyPrefab, GetRandomPosition(), Quaternion.identity);
+            enemyController.speed = Random.Range(3, 5);
+            enemyController.fireable = (enemyCount % 5) == 0;            
         }
     }
 
 
     private Vector3 GetRandomPosition()
     {
-        Vector3 leftBorder = Camera.main.ScreenToWorldPoint(new Vector3(0 + 50, 0, 0));
-        Vector3 rightBorder = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width -50, 0, 0));    
-        return new Vector3(Random.Range(leftBorder.x, rightBorder.x), Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).y , 0);
+        return new Vector3(Random.Range(leftBorder.x + positionOffset, rightBorder.x - positionOffset), topBorder.y , 0);
     }
 
     public void RemoveEnemy()
