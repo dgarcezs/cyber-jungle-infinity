@@ -5,12 +5,15 @@ public class ThunderBoltController : MonoBehaviour
 
     private readonly string EnemyTag = "Enemy";
     
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag(EnemyTag))
         {
-            Destroy(gameObject);
+            if (collision.TryGetComponent<HealthManager>(out var enemyHealtManager))
+            {
+                enemyHealtManager.Damage(1);
+                Destroy(gameObject);
+            }            
         }                
     }
 }
