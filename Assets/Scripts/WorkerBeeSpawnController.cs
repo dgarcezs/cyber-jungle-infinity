@@ -21,7 +21,7 @@ public class WorkerBeeSpawnController : MonoBehaviour
 
     private void OnEnable()
     {
-        InvokeRepeating(nameof(SpawnWorkerBee), 1f, 0.5f);
+        InvokeRepeating(nameof(SpawnWorkerBee), 1f, 1f);
     }
 
     private void OnDisable()
