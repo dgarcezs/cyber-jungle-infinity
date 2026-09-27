@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {
+        Direction = Vector2.zero;
         moveAction.action.Disable();
     }
 
