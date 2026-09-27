@@ -9,7 +9,11 @@ public class StingController : MonoBehaviour
     {
         if (collision.CompareTag(PlayerTag))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            if (collision.TryGetComponent<HealthManager>(out var playerHealthManager))
+            {
+                playerHealthManager.Damage(1);
+                Destroy(gameObject);
+            }            
         }                
     }
 }

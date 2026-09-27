@@ -28,7 +28,7 @@ public class ThunderBoltMachineController : MonoBehaviour
 
     public void TriggerThunderBolt(InputAction.CallbackContext context)
     {
-        if (context.performed && !isCoolingdown) 
+        if (context.performed && !isCoolingdown && enabled) 
         {
             ThunderBoltController newThunderBolt = Instantiate(thunderBoltPrefab, transform.position, Quaternion.identity);
             isCoolingdown = true;

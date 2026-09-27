@@ -1,13 +1,11 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
-[RequireComponent(typeof(Collider2D))]
 
+[RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Animator))]
 public class EnemyController : MonoBehaviour
 {
-
+    private static readonly int FloatHash = Animator.StringToHash("Float");
     private static readonly int DestroyHash = Animator.StringToHash("Destroy");
-    private static readonly int AttackHash = Animator.StringToHash("Attack");
 
     [SerializeField ]
     private StingMachineContoller stingMachineContoller;
@@ -15,6 +13,7 @@ public class EnemyController : MonoBehaviour
     public float speed = 3f; 
     public bool fireable = false;
 
+    private HealthManager healthManager;
 
     private Vector2 direction = Vector2.down;
     private Animator animator;
@@ -46,7 +45,11 @@ public class EnemyController : MonoBehaviour
     {
         animator = GetComponent<Animator>();    
         enemyCollider = GetComponent<Collider2D>();
+    }
 
+    private void Start()
+    {
+        healthManager = GetComponent<HealthManager>();
     }
 
     private void Update()
@@ -54,7 +57,7 @@ public class EnemyController : MonoBehaviour
         transform.Translate(speed * Time.deltaTime * direction, Space.World);
         if (fireable && GetToAttckPoint() && !isAttacking)
         {            
-            animator.SetTrigger(AttackHash);            
+            animator.SetTrigger(FloatHash);            
             direction = Vector2.zero;
         }
     }
@@ -63,13 +66,12 @@ public class EnemyController : MonoBehaviour
     {
         if (collider.CompareTag("Player"))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            if (collider.TryGetComponent<HealthManager>(out var playerHealthManager)) 
+            {
+                playerHealthManager.Damage(1);
+                Destroy(gameObject);
+            }
         }        
-        if (collider.CompareTag("ThunderBolt"))
-        {
-            isInExplosionMode = true;
-            animator.SetTrigger(DestroyHash);            
-        }
     }
 
     private bool GetToAttckPoint()
@@ -77,5 +79,15 @@ public class EnemyController : MonoBehaviour
         Vector3 position = gameObject.transform.position;
         float topBorder = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).y;
         return  (position.y < (topBorder - enemyCollider.bounds.size.y));
+    }
+
+    private void OnHealthChange(int health)
+    {
+        if (health <= 0)
+        {
+            direction = Vector2.zero;
+            isInExplosionMode = true;
+            animator.SetTrigger(DestroyHash);
+        }
     }
 }

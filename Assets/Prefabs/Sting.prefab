@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 128523613035383830}
   - component: {fileID: 3259040776552325166}
   - component: {fileID: 1180468289205749851}
+  - component: {fileID: 3384341013191356940}
   m_Layer: 0
   m_Name: Sting
   m_TagString: Untagged
@@ -184,3 +185,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8071e7e0c7aeda013bc9f2771164afaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StingTrajectory
+--- !u!114 &3384341013191356940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 440519899790868511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ece4ce0ff4b4e3a3b8e4ef5134e5283, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DestroyWhenNotVisible
